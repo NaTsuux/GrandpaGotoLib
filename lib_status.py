@@ -1,7 +1,8 @@
 import json
 from dataclasses import dataclass
 
-SEAT_AVAILABLE_CODE = 1
+SEAT_AVAILABLE_STATUS = 1
+SEAT_AVAILABLE_TYPE = 1
 
 
 # @dataclass
@@ -34,10 +35,10 @@ class Seat:
     x: int
     y: int
     key: str
-    type: int
+    type: int     # 在pre时 5表示被锁 1表示可选
     name: str
     seat_status: int
-    status: bool
+    status: bool  # 在pre时 为true是可选
 
     def __init__(self, seat):
         self.__dict__.update(seat)

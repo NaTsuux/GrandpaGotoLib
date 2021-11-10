@@ -69,19 +69,37 @@ do_reserve_seat_query = {
 }
 
 
-def fill_reserve_lib_status_query_attr():
+def fill_reserve_lib_status_query():
     return json.dumps(reserve_lib_status_query)
 
 
-def fill_reserve_seat_status_query_attr(lib_id: int):
+def fill_reserve_seat_status_query(lib_id: int):
     result = reserve_seat_status_query.copy()
     result.get("variables").update({"libId": lib_id})
     return json.dumps(result)
 
 
-def fill_do_reserve_seat_query_attr(seat_key: str, lib_id: int):
+def fill_do_reserve_seat_query(seat_key: str, lib_id: int):
     result = do_reserve_seat_query.copy()
     result.get("variables").update({"seatKey": seat_key})
+    result.get("variables").update({"libId": lib_id})
+    return json.dumps(result)
+
+
+pre_pickup_lib_status_query = {"operationName": "index",
+                               "query": "query index {\n userAuth {\n user {\n prereserveAuto: getSchConfig(extra: true, fields: \"prereserve.auto\")\n }\n currentUser {\n sch {\n isShowCommon\n }\n }\n prereserve {\n libs {\n is_open\n lib_floor\n lib_group_id\n lib_id\n lib_name\n num\n seats_total\n }\n }\n oftenseat {\n prereserveList {\n id\n info\n lib_id\n seat_key\n status\n }\n }\n }\n}"}
+
+pre_pickup_seat_status_query = {"operationName": "libLayout",
+                                "query": "query libLayout($libId: Int!) {\n userAuth {\n prereserve {\n libLayout(libId: $libId) {\n max_x\n max_y\n seats_booking\n seats_total\n seats_used\n seats {\n key\n name\n seat_status\n status\n type\n x\n y\n }\n }\n }\n }\n}",
+                                "variables": {"libId": 0}}
+
+
+def fill_pre_pickup_lib_status_query():
+    return json.dumps(pre_pickup_lib_status_query)
+
+
+def fill_pre_pickup_seat_status_query(lib_id: int):
+    result = pre_pickup_seat_status_query.copy()
     result.get("variables").update({"libId": lib_id})
     return json.dumps(result)
 
