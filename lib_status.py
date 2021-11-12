@@ -1,5 +1,3 @@
-import json
-from dataclasses import dataclass
 
 SEAT_AVAILABLE_STATUS = 1
 SEAT_AVAILABLE_TYPE = 1
