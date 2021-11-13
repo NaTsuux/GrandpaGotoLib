@@ -30,7 +30,6 @@ class Reserve(QueryApi):
         while True:
             req = self.do_keep_alive_query()
             self.logger.info(f"Timer: {req.general_status}")
-            # TODO
             server_time = int(req.cookies.get("SERVERID").split('|')[1])
 
             now_time = int(time.time())
