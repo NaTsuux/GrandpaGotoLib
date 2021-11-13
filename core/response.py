@@ -25,6 +25,10 @@ class Response:
     def cookies(self):
         return self.response.cookies
 
+    @property
+    def error_msg(self):
+        return self.json.get("errors")[0].get("msg")
+
 
 class PreserveResponse(Response):
 
@@ -66,7 +70,7 @@ class PreserveResponse(Response):
 
     @property
     def lib_layout(self):
-        return self.lib_statuses.get("libs")[0].lib_layout
+        return self.general_status.get("libLayout")
 
     @property
     def saved(self):

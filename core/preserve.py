@@ -15,10 +15,6 @@ class Preserve(QueryApi):
         super(Preserve, self).__init__()
         self.session.set_type(PRESERVE_SESSION)
         self.logger = logging.getLogger("pre-reserve")
-        self._log_level = 1
-
-    def set_log_level(self, level):
-        self._log_level = level
 
     def do_check_msg_query(self):
         return self.session.post(data=PreserveQuery.fill_check_msg_query())
@@ -86,7 +82,7 @@ class Preserve(QueryApi):
                 # get_step返回中的getStep为0时是输入验证码之前，为1表示排队，为2表示可以选
                 # 在8:10-8:13期间 第一次进去getStep会获取为0
                 req = self.do_get_step_query()
-                if self._log_level == 2:
+                if self.log_level == 2:
                     log_response(req, "get_step")
 
                 if req.step == 0:
@@ -94,7 +90,7 @@ class Preserve(QueryApi):
                     target_url = req.success_url
                     # 获取验证码的图片url及code
                     captcha = self.do_get_captcha_query()
-                    if self._log_level == 1:
+                    if self.log_level == 1:
                         write_file("pre_captcha_query.json", captcha.text)
 
                     img = self.do_get_captcha_image(captcha.captcha_url)
@@ -104,7 +100,7 @@ class Preserve(QueryApi):
                     while True:
                         captcha_input = input()
                         req = self.do_submit_captcha_query(captcha_input, captcha.captcha_code)
-                        if self._log_level == 1:
+                        if self.log_level == 1:
                             write_file("pre_captcha_submit_query.json", req.text)
                         if req.verified:
                             break
@@ -141,7 +137,7 @@ class Preserve(QueryApi):
                     # for lib in free_seat:
                     lib_id = 324
                     result = self.do_seat_status_query(lib_id)
-                    if self._log_level == 1:
+                    if self.log_level == 1:
                         log_response(result, f"seat_map_{lib_id}")
 
                     lib_layout = LibLayout(result.lib_layout)
@@ -176,7 +172,7 @@ class Preserve(QueryApi):
         while True:
             count += 1
             req = self.do_lib_status_query()
-            if self._log_level == 1:
+            if self.log_level == 1:
                 log_response(req, "pre_pickup_lib_status")
 
             lib_status = [LibStatus(lib) for lib in req.lib_statuses]
@@ -193,7 +189,7 @@ class Preserve(QueryApi):
                 lib_id = lib.lib_id
                 result = self.do_seat_status_query(lib_id)
 
-                if self._log_level == 1:
+                if self.log_level == 1:
                     log_response(result, f"pre_seat_status_{lib_id}")
 
                 lib_layout = LibLayout(result.lib_layout)

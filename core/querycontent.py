@@ -11,7 +11,7 @@ class Query(Enum):
 
     @staticmethod
     def do_keep_alive_query():
-        return json.dumps(Query.keep_alive_query)
+        return json.dumps(Query.keep_alive_query.value)
 
 
 class PreserveQuery(Enum):

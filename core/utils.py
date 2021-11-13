@@ -34,7 +34,7 @@ def calc_target_time(target: str):
 
 
 def log_response(response, func_name=None):
-    file_name = datetime.datetime.now().strftime('%H:%M:%S')
+    file_name = datetime.datetime.now().strftime('%H-%M-%S')
     if func_name:
         file_name += f"_{func_name}"
     file_name += ".json"
@@ -110,9 +110,10 @@ class LibRt:
 
 def check_seat_privilege(lib_id: int, seat_name: str):
     if lib_id == 324 and seat_name in ["001", "002", "003", "004", "005", "006", "007", "008", "009",
-                                       "010", "011", "012", "108", "109", "110", "111", "112", "113",
-                                       "114", "115", "116", "117", "118", "119", "120", "121", "122",
-                                       "123", "124", "125", "126", "127", "128", "129", "130", "131"]:
+                                       "010", "011", "012"]:
+                                       # "108", "109", "110", "111", "112", "113",
+                                       # "114", "115", "116", "117", "118", "119", "120", "121", "122",
+                                       # "123", "124", "125", "126", "127", "128", "129", "130", "131"]:
         return False
     elif lib_id == 323:
         return False

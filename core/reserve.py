@@ -43,8 +43,9 @@ class Reserve(QueryApi):
             self.logger.info(f"Timer: Sleep for {sleep_time} seconds")
             time.sleep(sleep_time)
 
-    def run(self):
+    def pickup(self):
         count = 0
+        self.wait_timer()
 
         while True:
             count += 1
@@ -68,7 +69,8 @@ class Reserve(QueryApi):
                     continue
                 lib_id = lib.lib_id
                 result = self.do_seat_status_query(lib_id)
-                log_response(result, f"res_seat_status_{lib_id}")
+                if self.log_level >= 1:
+                    log_response(result, f"res_seat_status_{lib_id}")
 
                 lib_layout = LibLayout(result.lib_layout)
                 seat_list: dict = lib_layout.seats
@@ -86,7 +88,9 @@ class Reserve(QueryApi):
                     if req.seat_reserved:
                         self.logger.info(
                             f"Pickup success! {lib.lib_name} No.{available_seat_list[0].name}")
-                    exit(0)
+                        exit(0)
+                    else:
+                        self.logger.warning(f"Something wrong occurred: {req.error_msg}")
 
             self.logger.info("========================================")
 

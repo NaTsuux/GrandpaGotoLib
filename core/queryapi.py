@@ -7,7 +7,7 @@ from .querycontent import Query
 
 class QueryApi(ABC):
     def __init__(self):
-        self.debug_level = 1
+        self.log_level = 1
         self.config = Config()
         self.session = Session()
         self._timer = None
@@ -16,6 +16,9 @@ class QueryApi(ABC):
 
     def set_timer(self, timer=None):
         self._timer = timer
+
+    def set_log_level(self, level):
+        self.log_level = level
 
     @abstractmethod
     def do_lib_status_query(self):
